@@ -10,7 +10,10 @@
 
 .input-error {
     box-shadow: 0 0 10px $error-color;
-    animation: shake 0.5s ease-in-out;
+}
+
+.input-error-shake {
+    animation: shake 0.4s ease-in-out;
 }
 
 .add-player {
@@ -38,7 +41,7 @@
 }
 
 @keyframes shake {
-    $translation: 10%;
+    $translation: 5%;
 
     25% {
         transform: translateX(-$translation);

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import StartScreen from "./pages/StartScreen";
+import Cards from "./pages/Cards";
 
 function App() {
   const [screen, setScreen] = useState("start");
@@ -10,6 +11,8 @@ function App() {
         switch (screen) {
           case "start":
             return <StartScreen setScreen={setScreen} />;
+          case "cards":
+            return <Cards />;
           default:
             throw new Error(`Unknown screen: ${screen}.`);
         }

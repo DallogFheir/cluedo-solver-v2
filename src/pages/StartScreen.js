@@ -5,41 +5,72 @@ import {
   XCircleFill,
   ArrowRightCircleFill,
 } from "react-bootstrap-icons";
+import { useUpdatePlayers } from "../contexts/playersContext";
+import makeClassString from "../utilities/makeClassString";
 import logoBig from "../assets/logo_big.png";
 import logoMedium from "../assets/logo_medium.png";
 import logoSmall from "../assets/logo_small.png";
-import makeClassString from "../utilities/makeClassString";
 
 function StartScreen({ setScreen }) {
   const [numOfPlayers, setNumOfPlayers] = useState(3);
   const [playerName, setPlayerName] = useState("");
   const [playerNameError, setPlayerNameError] = useState(false);
+  const [playerNameErrorShake, setPlayerNameErrorShake] = useState(false);
   const [otherPlayersNames, setOtherPlayersNames] = useState(Array(5).fill(""));
   const [otherPlayersNamesError, setOtherPlayersNamesError] = useState(
     Array(5).fill(false)
   );
+  const [otherPlayersNamesErrorShake, setOtherPlayersNamesErrorShake] =
+    useState(Array(5).fill(false));
+  const [toggle, setToggle] = useState(false);
+  const updatePlayers = useUpdatePlayers();
 
   const validateInputs = () => {
-    let error = false;
+    setPlayerNameError(playerName.trim() === "");
+    setPlayerNameErrorShake(playerName.trim() === "");
+    setOtherPlayersNamesError((prevState) => {
+      const newState = [...prevState];
 
-    if (playerName.trim() === "") {
-      error = true;
-      setPlayerNameError(true);
-    }
-
-    otherPlayersNames.forEach((otherPlayerName, idx) => {
-      if (otherPlayerName.trim() === "") {
-        error = true;
-        setOtherPlayersNamesError((prevState) => {
-          const newState = [...prevState];
-          newState[idx] = true;
-          return newState;
-        });
+      for (let i = 0; i < numOfPlayers - 1; i++) {
+        newState[i] = otherPlayersNames[i].trim() === "";
       }
+
+      return newState;
+    });
+    setOtherPlayersNamesErrorShake((prevState) => {
+      const newState = [...prevState];
+
+      for (let i = 0; i < numOfPlayers - 1; i++) {
+        newState[i] = otherPlayersNames[i].trim() === "";
+      }
+
+      return newState;
     });
 
+    let error = false;
+    if (playerName.trim() === "") {
+      error = true;
+    }
+    for (let i = 0; i < numOfPlayers - 1; i++) {
+      if (otherPlayersNames[i].trim() === "") {
+        error = true;
+      }
+    }
     if (!error) {
+      const players = [
+        playerName,
+        ...otherPlayersNames.slice(0, numOfPlayers - 1),
+      ];
+
+      updatePlayers(
+        players.map((player) => {
+          return { name: player, cards: new Set(), notCards: new Set() };
+        })
+      );
       setScreen("cards");
+    } else {
+      // force React to rerender inputs to trigger animation
+      setToggle((prevState) => !prevState);
     }
   };
 
@@ -54,14 +85,19 @@ function StartScreen({ setScreen }) {
         <Form.Group>
           <Form.Label className="fs-4">Wpisz swoje imię:</Form.Label>
           <Form.Control
+            key={`playerName - ${toggle}`}
             className={makeClassString(
               "input-player",
-              playerNameError && "input-error"
+              playerNameError && "input-error",
+              playerNameErrorShake && "input-error-shake"
             )}
             type="text"
             placeholder="Twoje imię..."
             value={playerName}
-            onChange={(e) => setPlayerName(e.target.value)}
+            onChange={(e) => {
+              setPlayerName(e.target.value);
+              setPlayerNameError(e.target.value.trim() === "");
+            }}
           />
         </Form.Group>
       </div>
@@ -79,19 +115,26 @@ function StartScreen({ setScreen }) {
                   "input-player",
                   "input-player-other",
                   "mb-2",
-                  otherPlayersNamesError[idx] && "input-error"
+                  otherPlayersNamesError[idx] && "input-error",
+                  otherPlayersNamesErrorShake[idx] && "input-error-shake"
                 )}
-                key={idx}
+                key={`otherPlayerName${idx} - ${toggle}`}
                 type="text"
                 placeholder="Imię gracza..."
                 value={otherPlayersNames[idx]}
-                onChange={(e) =>
+                onChange={(e) => {
                   setOtherPlayersNames((prevState) => {
                     const newState = [...prevState];
                     newState[idx] = e.target.value;
                     return newState;
-                  })
-                }
+                  });
+
+                  setOtherPlayersNamesError((prevState) => {
+                    const newState = [...prevState];
+                    newState[idx] = e.target.value.trim() === "";
+                    return newState;
+                  });
+                }}
               />
             ))}
         </Form.Group>
