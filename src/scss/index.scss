@@ -1,6 +1,7 @@
 @use "./base" as *;
 @use "./app";
 @use "./startScreen";
+@use "./cards";
 
 * {
     box-sizing: border-box;

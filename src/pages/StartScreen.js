@@ -1,12 +1,9 @@
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
-import {
-  PlusCircleFill,
-  XCircleFill,
-  ArrowRightCircleFill,
-} from "react-bootstrap-icons";
+import { PlusCircleFill, XCircleFill } from "react-bootstrap-icons";
 import { useUpdatePlayers } from "../contexts/playersContext";
 import makeClassString from "../utilities/makeClassString";
+import NextArrow from "../components/NextArrow";
 import logoBig from "../assets/logo_big.png";
 import logoMedium from "../assets/logo_medium.png";
 import logoSmall from "../assets/logo_small.png";
@@ -61,6 +58,9 @@ function StartScreen({ setScreen }) {
         playerName,
         ...otherPlayersNames.slice(0, numOfPlayers - 1),
       ];
+      if (numOfPlayers === 4 || numOfPlayers === 5) {
+        players.push("ALL");
+      }
 
       updatePlayers(
         players.map((player) => {
@@ -113,7 +113,6 @@ function StartScreen({ setScreen }) {
               <Form.Control
                 className={makeClassString(
                   "input-player",
-                  "input-player-other",
                   "mb-2",
                   otherPlayersNamesError[idx] && "input-error",
                   otherPlayersNamesErrorShake[idx] && "input-error-shake"
@@ -161,10 +160,7 @@ function StartScreen({ setScreen }) {
         <span className="me-2">Usuń gracza</span>
         <XCircleFill />
       </div>
-      <ArrowRightCircleFill
-        className="mt-5 arrow-next"
-        onClick={validateInputs}
-      />
+      <NextArrow onClick={validateInputs} />
     </>
   );
 }
