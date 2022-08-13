@@ -1,23 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import StartScreen from "./pages/StartScreen";
 
 function App() {
+  const [screen, setScreen] = useState("start");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="d-flex flex-column justify-content-center align-items-center container">
+      {(() => {
+        switch (screen) {
+          case "start":
+            return <StartScreen setScreen={setScreen} />;
+          default:
+            throw new Error(`Unknown screen: ${screen}.`);
+        }
+      })()}
     </div>
   );
 }

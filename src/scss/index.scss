@@ -1,0 +1,23 @@
+@use "./base" as *;
+@use "./app";
+@use "./startScreen";
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    background-color: $primary-color;
+    color: $text-color;
+    height: 100%;
+}
+
+#root {
+    height: 100%;
+}
