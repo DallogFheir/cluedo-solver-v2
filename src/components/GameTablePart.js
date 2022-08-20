@@ -1,5 +1,6 @@
 import { XLg, CheckLg } from "react-bootstrap-icons";
 import { usePlayers } from "../contexts/playersContext";
+import makeClassString from "../utilities/makeClassString";
 
 function GameTablePart({ name, cards }) {
   const players = usePlayers();
@@ -13,7 +14,17 @@ function GameTablePart({ name, cards }) {
       </tr>
       {cards.map((card, idx) => (
         <tr key={`${name}-${idx}`}>
-          <td className="table-cell">{card}</td>
+          <td
+            className={makeClassString(
+              "table-cell",
+              players.some((player) => player.cards.has(card)) &&
+                "table-cell-crossed",
+              players.every((player) => player.notCards.has(card)) &&
+                "table-cell-solution"
+            )}
+          >
+            {card}
+          </td>
           {players.map((player, playerIdx) => (
             <td
               key={`${name}-${idx}-player-${playerIdx}`}

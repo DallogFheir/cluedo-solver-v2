@@ -71,12 +71,12 @@ function Cards({ setScreen }) {
       ...CARDS.rooms.filter((room) => !playerCards.includes(room)),
     ];
     updatePlayers({
-      name: players[0].name,
+      idx: 0,
       cards: playerCards,
       notCards: playerNotCards,
     });
     for (let i = 1; i < players.length; i++) {
-      updatePlayers({ name: players[i].name, notCards: playerCards });
+      updatePlayers({ idx: i, notCards: playerCards });
     }
     setScreen("main");
   };

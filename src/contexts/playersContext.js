@@ -49,7 +49,7 @@ export const useSetPlayers = function () {
 export const useUpdatePlayers = function () {
   const setPlayers = useContext(PlayersUpdateContext);
 
-  return ({ name, cards, notCards }) => {
+  return ({ idx, name, cards, notCards }) => {
     setPlayers((prevState) => {
       const newState = [...prevState];
 
@@ -60,10 +60,13 @@ export const useUpdatePlayers = function () {
         notCards = [];
       }
 
-      for (const player of newState) {
-        if (player.name === name) {
-          player.cards = new Set([...player.cards, ...cards]);
-          player.notCards = new Set([...player.notCards, ...notCards]);
+      for (let i = 0; i < newState.length; i++) {
+        if (i === idx) {
+          newState[i].cards = new Set([...newState[i].cards, ...cards]);
+          newState[i].notCards = new Set([
+            ...newState[i].notCards,
+            ...notCards,
+          ]);
           break;
         }
       }
