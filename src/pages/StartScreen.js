@@ -9,6 +9,7 @@ import logoMedium from "../assets/logo_medium.png";
 import logoSmall from "../assets/logo_small.png";
 
 function StartScreen({ setScreen }) {
+  const [initialRender, setInitialRender] = useState(true);
   const [numOfPlayers, setNumOfPlayers] = useState(3);
   const [playerName, setPlayerName] = useState("");
   const [playerNameError, setPlayerNameError] = useState(false);
@@ -85,6 +86,7 @@ function StartScreen({ setScreen }) {
         <Form.Group>
           <Form.Label className="fs-4">Wpisz swoje imię:</Form.Label>
           <Form.Control
+            autoFocus
             key={`playerName - ${toggle}`}
             className={makeClassString(
               "input-player",
@@ -111,6 +113,7 @@ function StartScreen({ setScreen }) {
             .fill(0)
             .map((_, idx) => (
               <Form.Control
+                autoFocus={!initialRender}
                 className={makeClassString(
                   "input-player",
                   "mb-2",
@@ -144,7 +147,10 @@ function StartScreen({ setScreen }) {
           "add-player",
           numOfPlayers === 6 && "hidden"
         )}
-        onClick={() => setNumOfPlayers((prevState) => prevState + 1)}
+        onClick={() => {
+          setNumOfPlayers((prevState) => prevState + 1);
+          setInitialRender(false);
+        }}
       >
         <span className="me-2">Dodaj gracza</span>
         <PlusCircleFill />
@@ -155,7 +161,10 @@ function StartScreen({ setScreen }) {
           "delete-player",
           numOfPlayers <= 3 && "hidden"
         )}
-        onClick={() => setNumOfPlayers((prevState) => prevState - 1)}
+        onClick={() => {
+          setNumOfPlayers((prevState) => prevState - 1);
+          setInitialRender(false);
+        }}
       >
         <span className="me-2">Usuń gracza</span>
         <XCircleFill />
