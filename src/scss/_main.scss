@@ -1,0 +1,17 @@
+@use "./base" as *;
+
+.tabs > ul {
+    display: flex;
+    justify-content: center;
+}
+
+.tabs > ul > li {
+    width: 50%;
+    text-align: center;
+    font-weight: bold;
+}
+
+.container-split {
+    display: flex;
+    justify-content: space-between;
+}

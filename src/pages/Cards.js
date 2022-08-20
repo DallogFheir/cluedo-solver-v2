@@ -88,13 +88,11 @@ function Cards({ setScreen }) {
               )}
               value={playerCards[idx]}
               onChange={(e) => {
-                {
-                  setPlayerCards((prevState) => {
-                    const newState = [...prevState];
-                    newState[idx] = e.target.value;
-                    return newState;
-                  });
-                }
+                setPlayerCards((prevState) => {
+                  const newState = [...prevState];
+                  newState[idx] = e.target.value;
+                  return newState;
+                });
               }}
             >
               {Object.entries(CARDS).map(([group, cards]) => (

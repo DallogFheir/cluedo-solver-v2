@@ -4,7 +4,9 @@ const MovesContext = React.createContext();
 const MovesUpdateContext = React.createContext();
 
 const MovesProvider = function ({ children }) {
-  const [moves, setMoves] = useState(JSON.parse(localStorage.getItem("moves")));
+  const [moves, setMoves] = useState(
+    JSON.parse(localStorage.getItem("moves")) ?? ["a", "b", "c"]
+  );
 
   useEffect(() => {
     localStorage.setItem("moves", JSON.stringify(moves));
@@ -26,5 +28,7 @@ export const useMoves = function () {
 };
 
 export const useUpdateMoves = function () {
-  return useContext(MovesUpdateContext);
+  const setMoves = useContext(MovesUpdateContext);
+
+  return (move) => setMoves((prevState) => [...prevState, move]);
 };
