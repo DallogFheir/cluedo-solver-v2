@@ -1,0 +1,27 @@
+@use "./base" as *;
+
+.modal {
+    color: #000;
+}
+
+.modal-text {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.modal-select {
+    display: block;
+    margin: 5px 0;
+}
+
+.modal-div {
+    margin-top: 20px;
+}
+
+.modal-separator {
+    margin-top: 40px;
+}
+
+.modal-bold {
+    font-weight: bold;
+}

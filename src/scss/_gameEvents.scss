@@ -5,4 +5,11 @@
     margin: 20px;
     width: 30%;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.button {
+    background-color: $primary-color-light;
 }
