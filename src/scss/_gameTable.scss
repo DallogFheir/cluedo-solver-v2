@@ -1,0 +1,28 @@
+@use "./base" as *;
+
+.container-table {
+    margin: 20px;
+    padding-right: 20px;
+    width: 60%;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.table {
+    color: $text-color;
+}
+
+.table-cell {
+    text-align: center;
+}
+
+.table-cell-bold {
+    font-weight: bold;
+}
+
+@media (max-width: $breakpoint) {
+    .container-table {
+        margin: 20px auto;
+        width: 90%;
+    }
+}

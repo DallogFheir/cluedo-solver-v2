@@ -1,0 +1,8 @@
+@use "./base" as *;
+
+.container-events {
+    height: 100vh;
+    margin: 20px;
+    width: 30%;
+    overflow-y: scroll;
+}

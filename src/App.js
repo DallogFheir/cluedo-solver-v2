@@ -6,7 +6,9 @@ import Main from "./pages/Main";
 
 function App() {
   const players = usePlayers();
-  const [screen, setScreen] = useState(players ? "main" : "start");
+  const [screen, setScreen] = useState(
+    players && players[0].cards.size !== 0 ? "main" : "start"
+  );
 
   switch (screen) {
     case "start":

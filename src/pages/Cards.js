@@ -13,7 +13,7 @@ function Cards({ setScreen }) {
   const playersWithoutAll = players.filter(
     (player) => player.name !== "ALL"
   ).length;
-  const cardsPerPlayer = Math.floor(18 / playersWithoutAll);
+  const cardsPerPlayer = Math.floor(NUM_OF_CARDS / playersWithoutAll);
   const cardsForAll = 18 - cardsPerPlayer * playersWithoutAll;
 
   const [playerCards, setPlayerCards] = useState(
@@ -33,6 +33,7 @@ function Cards({ setScreen }) {
   const validateCards = () => {
     if (
       cardsPerPlayer === 6 &&
+      new Set(playerCards).size === 6 &&
       (playerCards.filter((card) => !CARDS.suspects.includes(card)).length ===
         0 ||
         playerCards.filter((card) => !CARDS.tools.includes(card)).length === 0)
@@ -64,7 +65,16 @@ function Cards({ setScreen }) {
       return;
     }
 
-    updatePlayers({ name: players[0].name, cards: playerCards });
+    const playerNotCards = [
+      ...CARDS.tools.filter((tool) => !playerCards.includes(tool)),
+      ...CARDS.suspects.filter((suspect) => !playerCards.includes(suspect)),
+      ...CARDS.rooms.filter((room) => !playerCards.includes(room)),
+    ];
+    updatePlayers({
+      name: players[0].name,
+      cards: playerCards,
+      notCards: playerNotCards,
+    });
     for (let i = 1; i < players.length; i++) {
       updatePlayers({ name: players[i].name, notCards: playerCards });
     }

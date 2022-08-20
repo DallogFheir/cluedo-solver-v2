@@ -5,9 +5,9 @@ function GameEvents() {
   const moves = useMoves();
 
   return (
-    <div>
-      {moves.map((move) => (
-        <Move move={move} />
+    <div class="container-events">
+      {moves.map((move, idx) => (
+        <Move key={`move-${idx}`} move={move} />
       ))}
     </div>
   );

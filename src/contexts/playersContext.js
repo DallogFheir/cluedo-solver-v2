@@ -5,11 +5,26 @@ const PlayersUpdateContext = React.createContext();
 
 const PlayersProvider = function ({ children }) {
   const [players, setPlayers] = useState(
-    JSON.parse(localStorage.getItem("players"))
+    JSON.parse(localStorage.getItem("players"), (key, value) => {
+      if (key === "cards" || key === "notCards") {
+        return new Set(value);
+      }
+
+      return value;
+    })
   );
 
   useEffect(() => {
-    localStorage.setItem("players", JSON.stringify(players));
+    localStorage.setItem(
+      "players",
+      JSON.stringify(players, (key, value) => {
+        if (value instanceof Set) {
+          return [...value];
+        }
+
+        return value;
+      })
+    );
   }, [players]);
 
   return (
