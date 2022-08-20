@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
-import { usePlayers } from "../contexts/playersContext";
+import { usePlayers, useUpdatePlayers } from "../contexts/playersContext";
 import makeClassString from "../utilities/makeClassString";
 import CARDS from "../assets/cards";
 import NextArrow from "../components/NextArrow";
 
 function Cards({ setScreen }) {
   const players = usePlayers();
+  const updatePlayers = useUpdatePlayers();
 
   const NUM_OF_CARDS = 18;
   const playersWithoutAll = players.filter(
@@ -41,6 +42,32 @@ function Cards({ setScreen }) {
       return;
     }
 
+    let errors = Array(cardsPerPlayer).fill(false);
+    for (const card of new Set(playerCards)) {
+      const repeatedIndexes = [];
+
+      if (playerCards.filter((c) => c === card).length > 1) {
+        playerCards.forEach((c, idx) => {
+          if (c === card) {
+            repeatedIndexes.push(idx);
+          }
+        });
+      }
+
+      errors = errors.map((value, idx) =>
+        repeatedIndexes.includes(idx) ? true : value
+      );
+    }
+    if (errors.some((el) => el)) {
+      setPlayersCardsErrors(errors);
+      setToggle((prevState) => !prevState);
+      return;
+    }
+
+    updatePlayers({ name: players[0].name, cards: playerCards });
+    for (let i = 1; i < players.length; i++) {
+      updatePlayers({ name: players[i].name, notCards: playerCards });
+    }
     setScreen("main");
   };
 
@@ -60,13 +87,15 @@ function Cards({ setScreen }) {
                 playerCardsErrors[idx] && "input-error-shake"
               )}
               value={playerCards[idx]}
-              onChange={(e) =>
-                setPlayerCards((prevState) => {
-                  const newState = [...prevState];
-                  newState[idx] = e.target.value;
-                  return newState;
-                })
-              }
+              onChange={(e) => {
+                {
+                  setPlayerCards((prevState) => {
+                    const newState = [...prevState];
+                    newState[idx] = e.target.value;
+                    return newState;
+                  });
+                }
+              }}
             >
               {Object.entries(CARDS).map(([group, cards]) => (
                 <optgroup key={group} label={group}>
