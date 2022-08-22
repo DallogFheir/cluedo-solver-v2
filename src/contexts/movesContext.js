@@ -5,7 +5,7 @@ const MovesUpdateContext = React.createContext();
 
 const MovesProvider = function ({ children }) {
   const [moves, setMoves] = useState(
-    JSON.parse(localStorage.getItem("moves")) ?? ["a", "b", "c"]
+    JSON.parse(localStorage.getItem("moves")) ?? []
   );
 
   useEffect(() => {
@@ -31,4 +31,10 @@ export const useUpdateMoves = function () {
   const setMoves = useContext(MovesUpdateContext);
 
   return (move) => setMoves((prevState) => [...prevState, move]);
+};
+
+export const useDeleteLastMove = function () {
+  const setMoves = useContext(MovesUpdateContext);
+
+  return (move) => setMoves((prevState) => [...prevState].slice(0, -1));
 };

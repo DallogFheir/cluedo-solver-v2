@@ -1,0 +1,18 @@
+@use "./base" as *;
+
+.move {
+    width: 70%;
+    margin: 10px;
+    padding: 10px;
+    background-color: $text-color;
+    color: $text-color-inverse;
+    border-radius: 20px;
+}
+
+.move-bold {
+    font-weight: bold;
+}
+
+.move-p {
+    margin: 10px;
+}

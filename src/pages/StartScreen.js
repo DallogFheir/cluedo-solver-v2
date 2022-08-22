@@ -1,14 +1,13 @@
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { PlusCircleFill, XCircleFill } from "react-bootstrap-icons";
-import { useSetPlayers } from "../contexts/playersContext";
 import makeClassString from "../utilities/makeClassString";
 import NextArrow from "../components/NextArrow";
 import logoBig from "../assets/logo_big.png";
 import logoMedium from "../assets/logo_medium.png";
 import logoSmall from "../assets/logo_small.png";
 
-function StartScreen({ setScreen }) {
+function StartScreen({ setScreen, setInitialPlayers }) {
   const [initialRender, setInitialRender] = useState(true);
   const [numOfPlayers, setNumOfPlayers] = useState(3);
   const [playerName, setPlayerName] = useState("");
@@ -21,7 +20,6 @@ function StartScreen({ setScreen }) {
   const [otherPlayersNamesErrorShake, setOtherPlayersNamesErrorShake] =
     useState(Array(5).fill(false));
   const [toggle, setToggle] = useState(false);
-  const setPlayers = useSetPlayers();
 
   const validateInputs = () => {
     setPlayerNameError(playerName.trim() === "");
@@ -63,7 +61,7 @@ function StartScreen({ setScreen }) {
         players.push("ALL");
       }
 
-      setPlayers(
+      setInitialPlayers(
         players.map((player) => {
           return { name: player, cards: new Set(), notCards: new Set() };
         })

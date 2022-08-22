@@ -3,13 +3,28 @@
 .container-events {
     height: 100vh;
     margin: 20px;
+    padding-bottom: 100px;
     width: 30%;
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    align-items: center
+    align-items: center;
 }
 
 .button {
     background-color: $primary-color-light;
+}
+
+.arrow-remove {
+    font-size: 3em;
+
+    &:hover {
+        color: $primary-color-light;
+    }
+}
+
+@media (max-width: $breakpoint) {
+    .container-events {
+        width: 90%;
+    }
 }

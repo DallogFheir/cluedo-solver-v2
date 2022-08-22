@@ -1,16 +1,13 @@
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
-import { usePlayers, useUpdatePlayers } from "../contexts/playersContext";
+import { useSetPlayers } from "../contexts/playersContext";
 import makeClassString from "../utilities/makeClassString";
 import CARDS from "../assets/cards";
 import NextArrow from "../components/NextArrow";
 
-function Cards({ setScreen }) {
-  const players = usePlayers();
-  const updatePlayers = useUpdatePlayers();
-
+function Cards({ setScreen, initialPlayers, setInitialPlayers }) {
   const NUM_OF_CARDS = 18;
-  const playersWithoutAll = players.filter(
+  const playersWithoutAll = initialPlayers.filter(
     (player) => player.name !== "ALL"
   ).length;
   const cardsPerPlayer = Math.floor(NUM_OF_CARDS / playersWithoutAll);
@@ -29,6 +26,8 @@ function Cards({ setScreen }) {
     Array(cardsForAll).fill(false)
   );
   const [toggle, setToggle] = useState(false);
+
+  const setPlayers = useSetPlayers();
 
   const validateCards = () => {
     if (
@@ -70,14 +69,18 @@ function Cards({ setScreen }) {
       ...CARDS.suspects.filter((suspect) => !playerCards.includes(suspect)),
       ...CARDS.rooms.filter((room) => !playerCards.includes(room)),
     ];
-    updatePlayers({
-      idx: 0,
-      cards: playerCards,
-      notCards: playerNotCards,
+    setInitialPlayers((prevState) => {
+      const newState = [...prevState];
+
+      newState[0].cards = new Set(playerCards);
+      newState[0].notCards = new Set(playerNotCards);
+      for (let i = 1; i < newState.length; i++) {
+        newState[i].notCards = new Set(playerCards);
+      }
+
+      return newState;
     });
-    for (let i = 1; i < players.length; i++) {
-      updatePlayers({ idx: i, notCards: playerCards });
-    }
+    setPlayers(initialPlayers);
     setScreen("main");
   };
 

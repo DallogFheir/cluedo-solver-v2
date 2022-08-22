@@ -2,11 +2,13 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import { usePlayers, useUpdatePlayers } from "../contexts/playersContext";
+import { usePlayers } from "../contexts/playersContext";
+import { useUpdateMoves } from "../contexts/movesContext";
 import CARDS from "../assets/cards";
 
 function EventModal({ show, setShow }) {
   const players = usePlayers();
+  const updateMoves = useUpdateMoves();
   const [asker, setAsker] = useState(0);
   const [question, setQuestion] = useState({
     suspect: CARDS.suspects[0],
@@ -14,6 +16,7 @@ function EventModal({ show, setShow }) {
     room: CARDS.rooms[0],
   });
   const [answers, setAnswers] = useState({});
+  const [toggle, setToggle] = useState(false);
 
   const handleClose = () => {
     setAsker(0);
@@ -27,6 +30,8 @@ function EventModal({ show, setShow }) {
   };
 
   const handleAdd = () => {
+    updateMoves({ question, responses });
+
     handleClose();
   };
 
@@ -153,17 +158,20 @@ function EventModal({ show, setShow }) {
               <span className="modal-bold">{players[nextPlayerIdx].name}</span>:
             </div>
             <Form.Select
-              onChange={(e) =>
+              key={`last-select-${toggle}`}
+              defaultValue=""
+              onChange={(e) => {
                 setAnswers((prevState) => {
                   const newState = { ...prevState };
 
-                  newState[nextPlayerIdx] =
-                    e.target.value === "has" ? true : false;
+                  newState[nextPlayerIdx] = e.target.value === "has";
 
                   return newState;
-                })
-              }
+                });
+                setToggle((prevState) => !prevState);
+              }}
             >
+              <option value=""></option>
               <option value="has">ma</option>
               <option value="does-not-have">nie ma</option>
             </Form.Select>
@@ -171,7 +179,13 @@ function EventModal({ show, setShow }) {
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleAdd}>
+        <Button
+          variant="secondary"
+          disabled={
+            responses.length < players.length - 1 && !responses.at(-1)?.has
+          }
+          onClick={handleAdd}
+        >
           Dodaj
         </Button>
       </Modal.Footer>
