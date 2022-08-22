@@ -1,13 +1,20 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { BackspaceFill } from "react-bootstrap-icons";
-import { useMoves, useDeleteLastMove } from "../contexts/movesContext";
+import {
+  useMoves,
+  useSetMoves,
+  useDeleteLastMove,
+} from "../contexts/movesContext";
 import Move from "../components/Move";
 import EventModal from "../components/EventModal";
+import RestartModal from "../components/RestartModal";
 
-function GameEvents() {
+function GameEvents({ setInitialPlayers }) {
   const [showModal, setShowModal] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const moves = useMoves();
+  const setMoves = useSetMoves();
   const deleteLastMove = useDeleteLastMove();
 
   return (
@@ -29,8 +36,12 @@ function GameEvents() {
         >
           Dodaj wydarzenie
         </Button>
+        <p className="mt-5 link" onClick={() => setShowConfirmation(true)}>
+          Zacznij od początku
+        </p>
       </div>
       <EventModal show={showModal} setShow={setShowModal} />
+      <RestartModal show={showConfirmation} setShow={setShowConfirmation} />
     </>
   );
 }

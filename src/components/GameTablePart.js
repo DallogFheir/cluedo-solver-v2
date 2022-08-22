@@ -17,10 +17,13 @@ function GameTablePart({ name, cards }) {
           <td
             className={makeClassString(
               "table-cell",
-              players.some((player) => player.cards.has(card)) &&
-                "table-cell-crossed",
-              players.every((player) => player.notCards.has(card)) &&
-                "table-cell-solution"
+              players.every((player) => player.notCards.has(card))
+                ? "table-cell-solution"
+                : (players.some((player) => player.cards.has(card)) ||
+                    cards.some((card) =>
+                      players.every((player) => player.notCards.has(card))
+                    )) &&
+                    "table-cell-crossed"
             )}
           >
             {card}

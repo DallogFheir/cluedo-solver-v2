@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 
 const MovesContext = React.createContext();
-const MovesUpdateContext = React.createContext();
+const SetMovesContext = React.createContext();
 
 const MovesProvider = function ({ children }) {
   const [moves, setMoves] = useState(
@@ -14,9 +14,9 @@ const MovesProvider = function ({ children }) {
 
   return (
     <MovesContext.Provider value={moves}>
-      <MovesUpdateContext.Provider value={setMoves}>
+      <SetMovesContext.Provider value={setMoves}>
         {children}
-      </MovesUpdateContext.Provider>
+      </SetMovesContext.Provider>
     </MovesContext.Provider>
   );
 };
@@ -27,14 +27,18 @@ export const useMoves = function () {
   return useContext(MovesContext);
 };
 
+export const useSetMoves = function () {
+  return useContext(SetMovesContext);
+};
+
 export const useUpdateMoves = function () {
-  const setMoves = useContext(MovesUpdateContext);
+  const setMoves = useContext(SetMovesContext);
 
   return (move) => setMoves((prevState) => [...prevState, move]);
 };
 
 export const useDeleteLastMove = function () {
-  const setMoves = useContext(MovesUpdateContext);
+  const setMoves = useContext(SetMovesContext);
 
-  return (move) => setMoves((prevState) => [...prevState].slice(0, -1));
+  return () => setMoves((prevState) => [...prevState].slice(0, -1));
 };

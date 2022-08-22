@@ -1,21 +1,31 @@
 import { useState, useEffect } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
+import { playerReviver, playerReplacer } from "../utilities/jsonUtils";
+import {
+  useInitialPlayers,
+  useSetInitialPlayers,
+} from "../contexts/initialPlayersContext";
 import { useMoves } from "../contexts/movesContext";
 import { useSetPlayers } from "../contexts/playersContext";
 import GameEvents from "./GameEvents";
 import GameTable from "./GameTable";
 
-function Main({ initialPlayers }) {
+function Main() {
   const [smallWindow, setSmallWindow] = useState(
     window.matchMedia("(max-width: 500px)").matches
   );
   const moves = useMoves();
   const setPlayers = useSetPlayers();
+  const initialPlayers = useInitialPlayers();
+  const setInitialPlayers = useSetInitialPlayers();
 
   const mainLogic = () => {
-    const players = [...initialPlayers];
-    const questionRegister = [];
+    const players = JSON.parse(
+      JSON.stringify(initialPlayers, playerReplacer),
+      playerReviver
+    );
+    let questionRegister = [];
 
     for (const move of moves) {
       for (const response of move.responses) {
@@ -26,7 +36,14 @@ function Main({ initialPlayers }) {
           for (const question of Object.values(move.question)) {
             players[idx].notCards.add(question);
           }
+        } else if (typeof has === "string") {
+          // if player had a card and it's known
+          players[idx].cards.add(has);
+          players
+            .filter((_, playerIdx) => playerIdx !== idx)
+            .forEach((player) => player.notCards.add(has));
         } else {
+          // if player had a card but it's not known
           questionRegister.push({
             player: idx,
             has: Object.values(move.question),
@@ -35,8 +52,25 @@ function Main({ initialPlayers }) {
       }
     }
 
-    for (const question of questionRegister) {
-      const status = question.has.map((card) => card);
+    let thereWereChanges = true;
+    while (thereWereChanges) {
+      thereWereChanges = false;
+
+      questionRegister = questionRegister.filter((question) => {
+        const status = question.has.filter(
+          (card) => !players[question.player].notCards.has(card)
+        );
+
+        if (status.length === 1) {
+          players[question.player].cards.add(status[0]);
+          players
+            .filter((_, playerIdx) => playerIdx !== question.player)
+            .forEach((player) => player.notCards.add(status[0]));
+          thereWereChanges = true;
+        }
+
+        return !thereWereChanges;
+      });
     }
 
     setPlayers(players);
@@ -61,7 +95,7 @@ function Main({ initialPlayers }) {
         <Tab>Tabela</Tab>
       </TabList>
       <TabPanel>
-        <GameEvents />
+        <GameEvents setInitialPlayers={setInitialPlayers} />
       </TabPanel>
       <TabPanel>
         <GameTable />
@@ -69,7 +103,7 @@ function Main({ initialPlayers }) {
     </Tabs>
   ) : (
     <div className="container-split">
-      <GameEvents />
+      <GameEvents setInitialPlayers={setInitialPlayers} />
       <GameTable />
     </div>
   );

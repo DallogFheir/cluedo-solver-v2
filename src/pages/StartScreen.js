@@ -2,12 +2,14 @@ import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { PlusCircleFill, XCircleFill } from "react-bootstrap-icons";
 import makeClassString from "../utilities/makeClassString";
+import { useSetScreen } from "../contexts/screenContext";
+import { useSetInitialPlayers } from "../contexts/initialPlayersContext";
 import NextArrow from "../components/NextArrow";
 import logoBig from "../assets/logo_big.png";
 import logoMedium from "../assets/logo_medium.png";
 import logoSmall from "../assets/logo_small.png";
 
-function StartScreen({ setScreen, setInitialPlayers }) {
+function StartScreen() {
   const [initialRender, setInitialRender] = useState(true);
   const [numOfPlayers, setNumOfPlayers] = useState(3);
   const [playerName, setPlayerName] = useState("");
@@ -20,6 +22,8 @@ function StartScreen({ setScreen, setInitialPlayers }) {
   const [otherPlayersNamesErrorShake, setOtherPlayersNamesErrorShake] =
     useState(Array(5).fill(false));
   const [toggle, setToggle] = useState(false);
+  const setScreen = useSetScreen();
+  const setInitialPlayers = useSetInitialPlayers();
 
   const validateInputs = () => {
     setPlayerNameError(playerName.trim() === "");

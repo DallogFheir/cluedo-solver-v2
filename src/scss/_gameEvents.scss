@@ -23,6 +23,11 @@
     }
 }
 
+.link {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 @media (max-width: $breakpoint) {
     .container-events {
         width: 90%;

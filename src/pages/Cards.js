@@ -1,11 +1,20 @@
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
+import { useSetScreen } from "../contexts/screenContext";
+import {
+  useInitialPlayers,
+  useSetInitialPlayers,
+} from "../contexts/initialPlayersContext";
 import { useSetPlayers } from "../contexts/playersContext";
 import makeClassString from "../utilities/makeClassString";
 import CARDS from "../assets/cards";
 import NextArrow from "../components/NextArrow";
 
-function Cards({ setScreen, initialPlayers, setInitialPlayers }) {
+function Cards() {
+  const setScreen = useSetScreen();
+  const initialPlayers = useInitialPlayers();
+  const setInitialPlayers = useSetInitialPlayers();
+
   const NUM_OF_CARDS = 18;
   const playersWithoutAll = initialPlayers.filter(
     (player) => player.name !== "ALL"

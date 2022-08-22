@@ -13,6 +13,9 @@ function Move({ move, moveIdx }) {
           <p key={`move-${moveIdx}-${idx}`} className="move-p">
             gracz <span className="move-bold">{players[submove.idx].name}</span>{" "}
             {submove.has ? "ma kartę" : "nie ma karty"}
+            {submove.has !== true && (
+              <span className="move-bold"> {submove.has}</span>
+            )}
           </p>
         ))}
       </div>

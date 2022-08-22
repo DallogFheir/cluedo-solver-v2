@@ -37,20 +37,17 @@ function EventModal({ show, setShow }) {
 
   const responses = [];
   let nextPlayerIdx;
+  debugger;
   for (let i = asker + 1, j = 0; j < players.length - 1; j++) {
     nextPlayerIdx = (i + j) % players.length;
     const nextPlayer = players[nextPlayerIdx];
 
-    const ifPlayerHasCard = [
-      question.suspect,
-      question.tool,
-      question.room,
-    ].some((card) => nextPlayer.cards.has(card));
-    const ifPlayerDoesNotHaveCard = [
-      question.suspect,
-      question.tool,
-      question.room,
-    ].every((card) => nextPlayer.notCards.has(card));
+    const ifPlayerHasCard = Object.values(question).some((card) =>
+      nextPlayer.cards.has(card)
+    );
+    const ifPlayerDoesNotHaveCard = Object.values(question).every((card) =>
+      nextPlayer.notCards.has(card)
+    );
 
     if (ifPlayerHasCard) {
       responses.push({
@@ -65,10 +62,28 @@ function EventModal({ show, setShow }) {
       });
     } else {
       if (nextPlayerIdx in answers) {
-        responses.push({
-          idx: nextPlayerIdx,
-          has: answers[nextPlayerIdx],
-        });
+        if (answers[nextPlayerIdx]) {
+          const cardsThatCanHave = Object.values(question).filter(
+            (card) => !nextPlayer.notCards.has(card)
+          );
+
+          if (cardsThatCanHave.length === 1) {
+            responses.push({
+              idx: nextPlayerIdx,
+              has: cardsThatCanHave[0],
+            });
+          } else {
+            responses.push({
+              idx: nextPlayerIdx,
+              has: true,
+            });
+          }
+        } else {
+          responses.push({
+            idx: nextPlayerIdx,
+            has: false,
+          });
+        }
       } else {
         break;
       }
@@ -83,7 +98,12 @@ function EventModal({ show, setShow }) {
       <Modal.Body>
         <div>
           <p className="modal-text">Wybierz osobę pytającą:</p>
-          <Form.Select onChange={(e) => setAsker(e.target.value)}>
+          <Form.Select
+            onChange={(e) => {
+              setAsker(e.target.value);
+              setAnswers({});
+            }}
+          >
             {players.map((player, idx) => (
               <option key={`option-player-${idx}`} value={idx}>
                 {player.name}
@@ -95,13 +115,14 @@ function EventModal({ show, setShow }) {
           <p>Wybierz, o co pytała:</p>
           <Form.Select
             className="modal-select"
-            onChange={(e) =>
+            onChange={(e) => {
               setQuestion((prevState) => {
                 const newState = { ...prevState };
                 newState.suspect = e.target.value;
                 return newState;
-              })
-            }
+              });
+              setAnswers({});
+            }}
           >
             {CARDS.suspects.map((suspect, idx) => (
               <option key={`modal-suspect-${idx}`} value={suspect}>
@@ -111,13 +132,14 @@ function EventModal({ show, setShow }) {
           </Form.Select>
           <Form.Select
             className="modal-select"
-            onChange={(e) =>
+            onChange={(e) => {
               setQuestion((prevState) => {
                 const newState = { ...prevState };
                 newState.tool = e.target.value;
                 return newState;
-              })
-            }
+              });
+              setAnswers({});
+            }}
           >
             {CARDS.tools.map((tool, idx) => (
               <option key={`modal-tool-${idx}`} value={tool}>
@@ -127,13 +149,14 @@ function EventModal({ show, setShow }) {
           </Form.Select>
           <Form.Select
             className="modal-select"
-            onChange={(e) =>
+            onChange={(e) => {
               setQuestion((prevState) => {
                 const newState = { ...prevState };
                 newState.room = e.target.value;
                 return newState;
-              })
-            }
+              });
+              setAnswers({});
+            }}
           >
             {CARDS.rooms.map((room, idx) => (
               <option key={`modal-room-${idx}`} value={room}>
@@ -148,6 +171,9 @@ function EventModal({ show, setShow }) {
               gracz{" "}
               <span className="modal-bold">{players[response.idx].name}</span>{" "}
               {response.has ? "ma kartę" : "nie ma karty"}
+              <span className="modal-bold">
+                {typeof response.has === "string" ? ` ${response.has}` : ""}
+              </span>
             </p>
           ))}
         </div>
@@ -177,6 +203,36 @@ function EventModal({ show, setShow }) {
             </Form.Select>
           </div>
         )}
+        <div className="modal-div">
+          {asker === 0 &&
+            answers[nextPlayerIdx - 1] &&
+            Object.values(question).filter(
+              (card) => !players[nextPlayerIdx - 1].notCards.has(card)
+            ).length !== 1 && (
+              <Form.Select
+                defaultValue=""
+                onChange={(e) =>
+                  setAnswers((prevState) => {
+                    const newState = { ...prevState };
+
+                    newState[nextPlayerIdx - 1] = e.target.value;
+
+                    return newState;
+                  })
+                }
+              >
+                {Object.values(question)
+                  .filter(
+                    (card) => !players[nextPlayerIdx - 1].notCards.has(card)
+                  )
+                  .map((question, idx) => (
+                    <option key={`answer-to-asker-${idx}`} value={question}>
+                      {question}
+                    </option>
+                  ))}
+              </Form.Select>
+            )}
+        </div>
       </Modal.Body>
       <Modal.Footer>
         <Button
