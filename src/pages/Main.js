@@ -86,7 +86,7 @@ function Main() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  useEffect(mainLogic, [initialPlayers, moves]);
+  useEffect(mainLogic, [initialPlayers, setPlayers, moves]);
 
   return smallWindow ? (
     <Tabs className="tabs">

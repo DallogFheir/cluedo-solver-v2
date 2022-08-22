@@ -93,6 +93,12 @@ function Cards() {
     setScreen("main");
   };
 
+  const groupTrans = {
+    suspects: "podejrzani",
+    tools: "narzędzia zbrodni",
+    rooms: "pomieszczenia",
+  };
+
   return (
     <>
       <Form.Group className="d-flex flex-column justify-content-center align-items-center">
@@ -118,7 +124,7 @@ function Cards() {
               }}
             >
               {Object.entries(CARDS).map(([group, cards]) => (
-                <optgroup key={group} label={group}>
+                <optgroup key={group} label={groupTrans[group]}>
                   {cards.map((card) => (
                     <option key={card} value={card}>
                       {card}
@@ -150,7 +156,7 @@ function Cards() {
                 }
               >
                 {Object.entries(CARDS).map(([group, cards]) => (
-                  <optgroup key={group} label={group}>
+                  <optgroup key={group} label={groupTrans[group]}>
                     {cards.map((card) => (
                       <option key={card} value={card}>
                         {card}

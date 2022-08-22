@@ -1,20 +1,15 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { BackspaceFill } from "react-bootstrap-icons";
-import {
-  useMoves,
-  useSetMoves,
-  useDeleteLastMove,
-} from "../contexts/movesContext";
+import { useMoves, useDeleteLastMove } from "../contexts/movesContext";
 import Move from "../components/Move";
 import EventModal from "../components/EventModal";
 import RestartModal from "../components/RestartModal";
 
-function GameEvents({ setInitialPlayers }) {
+function GameEvents() {
   const [showModal, setShowModal] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const moves = useMoves();
-  const setMoves = useSetMoves();
   const deleteLastMove = useDeleteLastMove();
 
   return (
