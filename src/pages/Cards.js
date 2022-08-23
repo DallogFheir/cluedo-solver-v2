@@ -7,7 +7,7 @@ import {
 } from "../contexts/initialPlayersContext";
 import { useSetPlayers } from "../contexts/playersContext";
 import makeClassString from "../utilities/makeClassString";
-import CARDS from "../assets/cards";
+import { CARDS } from "../assets/cards";
 import NextArrow from "../components/NextArrow";
 
 function Cards() {

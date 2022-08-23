@@ -19,10 +19,12 @@ function GameEvents() {
           <Move key={`move-${idx}`} move={move} moveIdx={idx} />
         ))}
         {moves.length > 0 && (
-          <BackspaceFill
-            className="mt-3 arrow-remove"
-            onClick={() => deleteLastMove()}
-          />
+          <div>
+            <BackspaceFill
+              className="mt-3 arrow-remove"
+              onClick={() => deleteLastMove()}
+            />
+          </div>
         )}
         <Button
           className="mt-5"

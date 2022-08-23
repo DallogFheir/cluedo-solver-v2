@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { usePlayers } from "../contexts/playersContext";
 import { useUpdateMoves } from "../contexts/movesContext";
-import CARDS from "../assets/cards";
+import { CARDS } from "../assets/cards";
 
 function EventModal({ show, setShow }) {
   const players = usePlayers();
@@ -37,7 +37,6 @@ function EventModal({ show, setShow }) {
 
   const responses = [];
   let nextPlayerIdx;
-  debugger;
   for (let i = asker + 1, j = 0; j < players.length - 1; j++) {
     nextPlayerIdx = (i + j) % players.length;
     const nextPlayer = players[nextPlayerIdx];
@@ -78,6 +77,7 @@ function EventModal({ show, setShow }) {
               has: true,
             });
           }
+          break;
         } else {
           responses.push({
             idx: nextPlayerIdx,

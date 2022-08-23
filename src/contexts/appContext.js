@@ -5,13 +5,13 @@ import ScreenProvider from "./screenContext";
 
 const AppProvider = function ({ children }) {
   return (
-    <ScreenProvider>
-      <InitialPlayersProvider>
+    <InitialPlayersProvider>
+      <ScreenProvider>
         <PlayersProvider>
           <MovesProvider>{children}</MovesProvider>
         </PlayersProvider>
-      </InitialPlayersProvider>
-    </ScreenProvider>
+      </ScreenProvider>
+    </InitialPlayersProvider>
   );
 };
 

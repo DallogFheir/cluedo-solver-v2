@@ -1,4 +1,4 @@
-const CARDS = {
+export const CARDS = {
   suspects: [
     "Ksiądz Zieliński",
     "Pani Bielecka",
@@ -28,4 +28,5 @@ const CARDS = {
   ],
 };
 
-export default CARDS;
+export const NUM_OF_CARDS =
+  CARDS.suspects.length + CARDS.tools.length + CARDS.rooms.length - 3;

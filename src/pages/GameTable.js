@@ -2,7 +2,7 @@ import Table from "react-bootstrap/Table";
 
 import { usePlayers } from "../contexts/playersContext";
 import GameTablePart from "../components/GameTablePart";
-import CARDS from "../assets/cards";
+import { CARDS } from "../assets/cards";
 
 function GameTable() {
   const players = usePlayers();
