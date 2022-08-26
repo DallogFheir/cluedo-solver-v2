@@ -55,7 +55,6 @@ function Main() {
 
     let thereWereChanges = true;
     while (thereWereChanges) {
-      debugger;
       thereWereChanges = false;
 
       // check for situations where player had a card but now it's known

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -7,6 +7,7 @@ import { useUpdateMoves } from "../contexts/movesContext";
 import { CARDS } from "../assets/cards";
 
 function EventModal({ show, setShow }) {
+  const lastInput = useRef();
   const players = usePlayers();
   const updateMoves = useUpdateMoves();
   const [asker, setAsker] = useState(0);
@@ -30,6 +31,7 @@ function EventModal({ show, setShow }) {
   };
 
   const handleAdd = () => {
+    debugger;
     updateMoves({ question, responses });
 
     handleClose();
@@ -74,7 +76,7 @@ function EventModal({ show, setShow }) {
           } else {
             responses.push({
               idx: nextPlayerIdx,
-              has: true,
+              has: answers[nextPlayerIdx],
             });
           }
           break;
@@ -205,26 +207,30 @@ function EventModal({ show, setShow }) {
         )}
         <div className="modal-div">
           {asker === 0 &&
-            answers[nextPlayerIdx - 1] &&
+            answers[nextPlayerIdx] &&
             Object.values(question).filter(
-              (card) => !players[nextPlayerIdx - 1].notCards.has(card)
+              (card) => !players[nextPlayerIdx].notCards.has(card)
             ).length !== 1 && (
               <Form.Select
+                ref={lastInput}
                 defaultValue=""
                 onChange={(e) =>
                   setAnswers((prevState) => {
-                    const newState = { ...prevState };
+                    if (e.target.value !== "") {
+                      const newState = { ...prevState };
 
-                    newState[nextPlayerIdx - 1] = e.target.value;
+                      newState[nextPlayerIdx] = e.target.value;
 
-                    return newState;
+                      return newState;
+                    }
+
+                    return prevState;
                   })
                 }
               >
+                {answers[nextPlayerIdx] === true && <option value=""></option>}
                 {Object.values(question)
-                  .filter(
-                    (card) => !players[nextPlayerIdx - 1].notCards.has(card)
-                  )
+                  .filter((card) => !players[nextPlayerIdx].notCards.has(card))
                   .map((question, idx) => (
                     <option key={`answer-to-asker-${idx}`} value={question}>
                       {question}
@@ -238,7 +244,8 @@ function EventModal({ show, setShow }) {
         <Button
           variant="secondary"
           disabled={
-            responses.length < players.length - 1 && !responses.at(-1)?.has
+            (responses.length < players.length - 1 && !responses.at(-1)?.has) ||
+            lastInput.current?.value === ""
           }
           onClick={handleAdd}
         >
