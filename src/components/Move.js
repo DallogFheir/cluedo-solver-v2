@@ -1,10 +1,18 @@
 import { usePlayers } from "../contexts/playersContext";
+import makeClassString from "../utilities/makeClassString";
 
 function Move({ move, moveIdx }) {
   const players = usePlayers();
 
+  // filter out if asker is player, or no one had cards
+  const ifFiltered =
+    move.asker !== 0 &&
+    move.responses.filter((response) => response.has).length ===
+      move.responses.length &&
+    typeof move.responses.at(-1).has !== "string";
+
   return (
-    <div className="move">
+    <div className={makeClassString("move", ifFiltered && "move-filter")}>
       <div className="move-bold">
         {move.question.suspect}, {move.question.tool}, {move.question.room}
       </div>

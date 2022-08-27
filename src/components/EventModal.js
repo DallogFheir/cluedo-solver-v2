@@ -31,8 +31,7 @@ function EventModal({ show, setShow }) {
   };
 
   const handleAdd = () => {
-    debugger;
-    updateMoves({ question, responses });
+    updateMoves({ asker, question, responses });
 
     handleClose();
   };
