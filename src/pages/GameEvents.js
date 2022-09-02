@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { BackspaceFill } from "react-bootstrap-icons";
 import { useMoves, useDeleteLastMove } from "../contexts/movesContext";
+import { usePlayers } from "../contexts/playersContext";
 import Move from "../components/Move";
 import EventModal from "../components/EventModal";
 import RestartModal from "../components/RestartModal";
@@ -11,16 +12,25 @@ function GameEvents() {
   const [filtered, setFiltered] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const players = usePlayers();
   const moves = useMoves();
   const deleteLastMove = useDeleteLastMove();
 
   const filterMoves = (move) => {
     if (filtered) {
+      const playerWhoHadCard = move.responses.at(-1).idx;
+      const crossedOutCards = [
+        players[playerWhoHadCard].notCards.has(move.question.suspect),
+        players[playerWhoHadCard].notCards.has(move.question.tool),
+        players[playerWhoHadCard].notCards.has(move.question.room),
+      ];
+
       return (
         move.asker !== 0 &&
         move.responses.filter((response) => response.has).length ===
           move.responses.length &&
-        typeof move.responses.at(-1).has !== "string"
+        typeof move.responses.at(-1).has !== "string" &&
+        crossedOutCards.filter((el) => el).length !== 2
       );
     }
 
@@ -51,15 +61,18 @@ function GameEvents() {
           Dodaj wydarzenie
         </Button>
         <Form className="mt-5">
-          <Form.Group>
+          <Form.Group className="d-flex">
             <Form.Check
+              id="filter-checkbox"
               className="checkbox"
               type="checkbox"
-              label="Przefiltruj"
               onChange={(e) => {
                 setFiltered(e.target.checked);
               }}
             />
+            <Form.Check.Label className="ms-2" htmlFor="filter-checkbox">
+              Pokaż tylko istotne
+            </Form.Check.Label>
           </Form.Group>
         </Form>
         <p className="mt-5 link" onClick={() => setShowConfirmation(true)}>
