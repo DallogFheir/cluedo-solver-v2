@@ -107,7 +107,7 @@ function StartScreen() {
       </div>
       <div className="mt-5">
         <Form.Group className="d-flex flex-column align-items-center">
-          <Form.Label className="fs-4">
+          <Form.Label className="fs-4 text-center">
             Wpisz imiona innych graczy, zaczynając od tego, który siedzi po
             Twojej prawej stronie.
           </Form.Label>
@@ -171,7 +171,9 @@ function StartScreen() {
         <span className="me-2">Usuń gracza</span>
         <XCircleFill />
       </div>
-      <NextArrow onClick={validateInputs} />
+      <div>
+        <NextArrow onClick={validateInputs} />
+      </div>
     </>
   );
 }

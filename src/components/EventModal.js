@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -7,9 +7,9 @@ import { useUpdateMoves } from "../contexts/movesContext";
 import { CARDS } from "../assets/cards";
 
 function EventModal({ show, setShow }) {
-  const lastInput = useRef();
   const players = usePlayers();
   const updateMoves = useUpdateMoves();
+  const [lastInput, setLastInput] = useState("");
   const [asker, setAsker] = useState(0);
   const [question, setQuestion] = useState({
     suspect: CARDS.suspects[0],
@@ -101,8 +101,9 @@ function EventModal({ show, setShow }) {
           <p className="modal-text">Wybierz osobę pytającą:</p>
           <Form.Select
             onChange={(e) => {
-              setAsker(e.target.value);
+              setAsker(parseInt(e.target.value));
               setAnswers({});
+              setLastInput("");
             }}
           >
             {players.map((player, idx) => (
@@ -123,6 +124,7 @@ function EventModal({ show, setShow }) {
                 return newState;
               });
               setAnswers({});
+              setLastInput("");
             }}
           >
             {CARDS.suspects.map((suspect, idx) => (
@@ -140,6 +142,7 @@ function EventModal({ show, setShow }) {
                 return newState;
               });
               setAnswers({});
+              setLastInput("");
             }}
           >
             {CARDS.tools.map((tool, idx) => (
@@ -157,6 +160,7 @@ function EventModal({ show, setShow }) {
                 return newState;
               });
               setAnswers({});
+              setLastInput("");
             }}
           >
             {CARDS.rooms.map((room, idx) => (
@@ -211,9 +215,9 @@ function EventModal({ show, setShow }) {
               (card) => !players[nextPlayerIdx].notCards.has(card)
             ).length !== 1 && (
               <Form.Select
-                ref={lastInput}
                 defaultValue=""
-                onChange={(e) =>
+                onChange={(e) => {
+                  setLastInput(e.target.value);
                   setAnswers((prevState) => {
                     if (e.target.value !== "") {
                       const newState = { ...prevState };
@@ -224,8 +228,8 @@ function EventModal({ show, setShow }) {
                     }
 
                     return prevState;
-                  })
-                }
+                  });
+                }}
               >
                 {answers[nextPlayerIdx] === true && <option value=""></option>}
                 {Object.values(question)
@@ -244,7 +248,7 @@ function EventModal({ show, setShow }) {
           variant="secondary"
           disabled={
             (responses.length < players.length - 1 && !responses.at(-1)?.has) ||
-            lastInput.current?.value === ""
+            lastInput === ""
           }
           onClick={handleAdd}
         >

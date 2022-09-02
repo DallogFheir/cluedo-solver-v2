@@ -9,13 +9,13 @@ function App() {
   switch (screen) {
     case "start":
       return (
-        <div className="d-flex flex-column justify-content-center align-items-center screen-container">
+        <div className="d-flex flex-column justify-content-start justify-content-md-center  align-items-center screen-container">
           <StartScreen />
         </div>
       );
     case "cards":
       return (
-        <div className="d-flex flex-column justify-content-center align-items-center screen-container">
+        <div className="d-flex flex-column justify-content-start justify-content-md-center  align-items-center screen-container">
           <Cards />
         </div>
       );
