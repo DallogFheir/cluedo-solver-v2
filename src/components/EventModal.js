@@ -247,13 +247,7 @@ function EventModal({ show, setShow }) {
         <Button
           variant="secondary"
           disabled={
-            (responses.length < players.length - 1 && !responses.at(-1)?.has) ||
-            (asker === 0 &&
-              answers[nextPlayerIdx] &&
-              Object.values(question).filter(
-                (card) => !players[nextPlayerIdx].notCards.has(card)
-              ).length !== 1 &&
-              lastInput === "")
+            responses.length < players.length - 1 && !responses.at(-1)?.has
           }
           onClick={handleAdd}
         >

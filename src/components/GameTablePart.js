@@ -9,7 +9,7 @@ function GameTablePart({ name, cards }) {
     <>
       <tr>
         <td className="table-cell table-cell-bold" colSpan={players.length + 1}>
-          PODEJRZANI
+          {name}
         </td>
       </tr>
       {cards.map((card, idx) => (
