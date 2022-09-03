@@ -49,13 +49,14 @@ function EventModal({ show, setShow }) {
       nextPlayer.notCards.has(card)
     );
 
-    if (ifPlayerHasCard) {
+    debugger;
+    if (ifPlayerHasCard && asker !== 0) {
       responses.push({
         idx: nextPlayerIdx,
         has: ifPlayerHasCard,
       });
       break;
-    } else if (ifPlayerDoesNotHaveCard) {
+    } else if (ifPlayerDoesNotHaveCard && asker !== 0) {
       responses.push({
         idx: nextPlayerIdx,
         has: ifPlayerHasCard,
@@ -86,6 +87,16 @@ function EventModal({ show, setShow }) {
           });
         }
       } else {
+        if (asker === 0 && ifPlayerHasCard) {
+          setAnswers((prevState) => {
+            const newState = { ...prevState };
+
+            newState[nextPlayerIdx] = true;
+
+            return newState;
+          });
+        }
+
         break;
       }
     }
