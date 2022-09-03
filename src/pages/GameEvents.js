@@ -58,7 +58,7 @@ function GameEvents() {
           variant="light"
           onClick={() => setShowModal(true)}
         >
-          Dodaj wydarzenie
+          Dodaj zapytanie
         </Button>
         <Form className="mt-5">
           <Form.Group className="d-flex">
@@ -75,7 +75,10 @@ function GameEvents() {
             </Form.Check.Label>
           </Form.Group>
         </Form>
-        <p className="mt-5 link" onClick={() => setShowConfirmation(true)}>
+        <p
+          className="mt-5 link link-start-again"
+          onClick={() => setShowConfirmation(true)}
+        >
           Zacznij od początku
         </p>
       </div>
