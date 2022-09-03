@@ -9,7 +9,6 @@ import { CARDS } from "../assets/cards";
 function EventModal({ show, setShow }) {
   const players = usePlayers();
   const updateMoves = useUpdateMoves();
-  const [lastInput, setLastInput] = useState("");
   const [asker, setAsker] = useState(0);
   const [question, setQuestion] = useState({
     suspect: CARDS.suspects[0],
@@ -102,6 +101,18 @@ function EventModal({ show, setShow }) {
     }
   }
 
+  let ifBtnDisabled;
+  if (
+    asker === 0 &&
+    answers[nextPlayerIdx] &&
+    Object.values(question).filter(
+      (card) => !players[nextPlayerIdx].notCards.has(card)
+    ).length !== 1 &&
+    typeof answers[nextPlayerIdx] !== "string"
+  ) {
+    ifBtnDisabled = true;
+  }
+
   return (
     <Modal className="modal" show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -114,7 +125,6 @@ function EventModal({ show, setShow }) {
             onChange={(e) => {
               setAsker(parseInt(e.target.value));
               setAnswers({});
-              setLastInput("");
             }}
           >
             {players.map((player, idx) => (
@@ -135,7 +145,6 @@ function EventModal({ show, setShow }) {
                 return newState;
               });
               setAnswers({});
-              setLastInput("");
             }}
           >
             {CARDS.suspects.map((suspect, idx) => (
@@ -153,7 +162,6 @@ function EventModal({ show, setShow }) {
                 return newState;
               });
               setAnswers({});
-              setLastInput("");
             }}
           >
             {CARDS.tools.map((tool, idx) => (
@@ -171,7 +179,6 @@ function EventModal({ show, setShow }) {
                 return newState;
               });
               setAnswers({});
-              setLastInput("");
             }}
           >
             {CARDS.rooms.map((room, idx) => (
@@ -228,7 +235,6 @@ function EventModal({ show, setShow }) {
               <Form.Select
                 defaultValue=""
                 onChange={(e) => {
-                  setLastInput(e.target.value);
                   setAnswers((prevState) => {
                     if (e.target.value !== "") {
                       const newState = { ...prevState };
@@ -258,7 +264,8 @@ function EventModal({ show, setShow }) {
         <Button
           variant="secondary"
           disabled={
-            responses.length < players.length - 1 && !responses.at(-1)?.has
+            ifBtnDisabled ||
+            (responses.length < players.length - 1 && !responses.at(-1)?.has)
           }
           onClick={handleAdd}
         >
