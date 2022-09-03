@@ -8,8 +8,7 @@ import Move from "../components/Move";
 import EventModal from "../components/EventModal";
 import RestartModal from "../components/RestartModal";
 
-function GameEvents() {
-  const [filtered, setFiltered] = useState(false);
+function GameEvents({ filtered, setFiltered }) {
   const [showModal, setShowModal] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const players = usePlayers();
@@ -71,6 +70,7 @@ function GameEvents() {
               onChange={(e) => {
                 setFiltered(e.target.checked);
               }}
+              checked={filtered}
             />
             <Form.Check.Label className="ms-2" htmlFor="filter-checkbox">
               Pokaż tylko istotne

@@ -16,6 +16,7 @@ function Main() {
   const [smallWindow, setSmallWindow] = useState(
     window.matchMedia("(max-width: 800px)").matches
   );
+  const [filtered, setFiltered] = useState(false);
   const moves = useMoves();
   const setPlayers = useSetPlayers();
   const initialPlayers = useInitialPlayers();
@@ -166,7 +167,11 @@ function Main() {
         <Tab>Tabela</Tab>
       </TabList>
       <TabPanel>
-        <GameEvents setInitialPlayers={setInitialPlayers} />
+        <GameEvents
+          filtered={filtered}
+          setFiltered={setFiltered}
+          setInitialPlayers={setInitialPlayers}
+        />
       </TabPanel>
       <TabPanel>
         <GameTable />
@@ -174,7 +179,11 @@ function Main() {
     </Tabs>
   ) : (
     <div className="container-split">
-      <GameEvents setInitialPlayers={setInitialPlayers} />
+      <GameEvents
+        filtered={filtered}
+        setFiltered={setFiltered}
+        setInitialPlayers={setInitialPlayers}
+      />
       <GameTable />
     </div>
   );
