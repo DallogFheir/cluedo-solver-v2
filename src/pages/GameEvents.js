@@ -27,10 +27,12 @@ function GameEvents() {
 
       return (
         move.asker !== 0 &&
-        move.responses.filter((response) => response.has).length ===
-          move.responses.length &&
+        move.responses.at(-1).has &&
         typeof move.responses.at(-1).has !== "string" &&
-        crossedOutCards.filter((el) => el).length !== 2
+        crossedOutCards.filter((el) => el).length !== 2 &&
+        Object.values(move.question).every(
+          (card) => !players[move.responses.at(-1).idx].cards.has(card)
+        )
       );
     }
 

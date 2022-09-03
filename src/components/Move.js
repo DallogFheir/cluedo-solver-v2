@@ -14,10 +14,12 @@ function Move({ move, moveIdx }) {
   // filter out if asker is player, or no one had cards
   const ifFiltered =
     move.asker !== 0 &&
-    move.responses.filter((response) => response.has).length ===
-      move.responses.length &&
+    move.responses.at(-1).has &&
     typeof move.responses.at(-1).has !== "string" &&
-    crossedOutCards.filter((el) => el).length !== 2;
+    crossedOutCards.filter((el) => el).length !== 2 &&
+    Object.values(move.question).every(
+      (card) => !players[move.responses.at(-1).idx].cards.has(card)
+    );
 
   return (
     <div className={makeClassString("move", ifFiltered && "move-filter")}>
