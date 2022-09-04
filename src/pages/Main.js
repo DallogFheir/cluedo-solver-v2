@@ -105,44 +105,97 @@ function Main() {
 
       // check the number of cards
       players.forEach((player) => {
-        const cardsPerPlayer = Math.floor(NUM_OF_CARDS / players.length);
-        // if number of cards of player = maximum
-        if (player.cards.size === cardsPerPlayer) {
-          Object.values(CARDS).forEach((group) =>
-            group.forEach((card) => {
-              const playerNotCardsBeforeCount = player.notCards.size;
+        const numOfCards = player.numOfCards;
 
-              if (!player.cards.has(card)) {
-                player.notCards.add(card);
+        if (numOfCards !== null) {
+          // if number of cards of player = maximum
+          if (player.cards.size === numOfCards) {
+            Object.values(CARDS).forEach((group) =>
+              group.forEach((card) => {
+                const playerNotCardsBeforeCount = player.notCards.size;
 
-                if (player.notCards.size > playerNotCardsBeforeCount) {
-                  thereWereChanges = true;
+                if (!player.cards.has(card)) {
+                  player.notCards.add(card);
+
+                  if (player.notCards.size > playerNotCardsBeforeCount) {
+                    thereWereChanges = true;
+                  }
                 }
-              }
-            })
-          );
-        }
-        // check if number of not known cards is equal to number of remaining cards to have
-        const numOfCardsAll = NUM_OF_CARDS + 3;
-        const emptyCardsCount =
-          numOfCardsAll - player.notCards.size - player.cards.size;
+              })
+            );
+          }
+          // check if number of not known cards is equal to number of remaining cards to have
+          const numOfCardsAll = NUM_OF_CARDS + 3;
+          const emptyCardsCount =
+            numOfCardsAll - player.notCards.size - player.cards.size;
 
-        const playersCardsBeforeCount = player.cards.size;
+          const playersCardsBeforeCount = player.cards.size;
 
-        if (emptyCardsCount === cardsPerPlayer - player.cards.size) {
-          Object.values(CARDS).forEach((group) =>
-            group.forEach((card) => {
-              if (!player.cards.has(card) && !player.notCards.has(card)) {
-                player.cards.add(card);
-              }
-            })
-          );
+          if (emptyCardsCount === numOfCards - player.cards.size) {
+            Object.values(CARDS).forEach((group) =>
+              group.forEach((card) => {
+                if (!player.cards.has(card) && !player.notCards.has(card)) {
+                  player.cards.add(card);
+                }
+              })
+            );
 
-          if (player.cards.size > playersCardsBeforeCount) {
-            thereWereChanges = true;
+            if (player.cards.size > playersCardsBeforeCount) {
+              thereWereChanges = true;
+            }
           }
         }
       });
+
+      // check if number of cards is now known
+      if (players.length === 4 || players.length === 5) {
+        players.forEach((player, idx) => {
+          if (player.numOfCards === null) {
+            // 4 players - 4, 4, 5, 5
+            // 5 players - 3, 3, 4, 4, 4
+
+            const otherPlayersNumOfCards = players
+              .filter((_, pidx) => pidx !== idx)
+              .map((p) => p.numOfCards);
+
+            if (players.length === 4) {
+              if (players.cards.size === 5) {
+                player.numOfCards = 5;
+                thereWereChanges = true;
+              }
+
+              if (
+                otherPlayersNumOfCards.filter((num) => num === 4).length === 2
+              ) {
+                player.numOfCards = 5;
+                thereWereChanges = true;
+              } else if (
+                otherPlayersNumOfCards.filter((num) => num === 5).length === 2
+              ) {
+                player.numOfCards = 4;
+                thereWereChanges = true;
+              }
+            } else {
+              if (player.cards.size === 4) {
+                player.numOfCards = 4;
+                thereWereChanges = true;
+              }
+
+              if (
+                otherPlayersNumOfCards.filter((num) => num === 3).length === 2
+              ) {
+                player.numOfCards = 4;
+                thereWereChanges = true;
+              } else if (
+                otherPlayersNumOfCards.filter((num) => num === 4).length === 3
+              ) {
+                player.numOfCards = 3;
+                thereWereChanges = true;
+              }
+            }
+          }
+        });
+      }
     }
 
     setPlayers(players);

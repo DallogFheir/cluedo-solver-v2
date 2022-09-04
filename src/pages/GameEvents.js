@@ -67,14 +67,12 @@ function GameEvents({ filtered, setFiltered }) {
               id="filter-checkbox"
               className="checkbox"
               type="checkbox"
+              label="Pokaż tylko istotne"
               onChange={(e) => {
                 setFiltered(e.target.checked);
               }}
               checked={filtered}
             />
-            <Form.Check.Label className="ms-2" htmlFor="filter-checkbox">
-              Pokaż tylko istotne
-            </Form.Check.Label>
           </Form.Group>
         </Form>
         <p

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import { useSetScreen } from "../contexts/screenContext";
 import {
@@ -14,13 +14,12 @@ function Cards() {
   const setScreen = useSetScreen();
   const initialPlayers = useInitialPlayers();
   const setInitialPlayers = useSetInitialPlayers();
+  const setPlayers = useSetPlayers();
 
   const NUM_OF_CARDS = 18;
-  const playersWithoutAll = initialPlayers.filter(
-    (player) => player.name !== "ALL"
-  ).length;
-  const cardsPerPlayer = Math.floor(NUM_OF_CARDS / playersWithoutAll);
-  const cardsForAll = 18 - cardsPerPlayer * playersWithoutAll;
+  const [cardsPerPlayer, setCardsPerPlayer] = useState(
+    Math.floor(NUM_OF_CARDS / initialPlayers.length)
+  );
 
   const [playerCards, setPlayerCards] = useState(
     Array(cardsPerPlayer).fill(CARDS.suspects[0])
@@ -28,15 +27,12 @@ function Cards() {
   const [playerCardsErrors, setPlayersCardsErrors] = useState(
     Array(cardsPerPlayer).fill(false)
   );
-  const [allCards, setAllCards] = useState(
-    Array(cardsForAll).fill(CARDS.suspects[0])
-  );
-  const [allCardsErrors, setAllCardsErrors] = useState(
-    Array(cardsForAll).fill(false)
-  );
   const [toggle, setToggle] = useState(false);
 
-  const setPlayers = useSetPlayers();
+  useEffect(() => {
+    setPlayerCards(Array(cardsPerPlayer).fill(CARDS.suspects[0]));
+    setPlayersCardsErrors(Array(cardsPerPlayer).fill(false));
+  }, [cardsPerPlayer]);
 
   const validateCards = () => {
     if (
@@ -83,8 +79,17 @@ function Cards() {
 
       newState[0].cards = new Set(playerCards);
       newState[0].notCards = new Set(playerNotCards);
+      newState[0].numOfCards = cardsPerPlayer;
       for (let i = 1; i < newState.length; i++) {
         newState[i].notCards = new Set(playerCards);
+
+        if (initialPlayers.length === 3) {
+          newState[i].numOfCards = 6;
+        } else if (initialPlayers.length === 6) {
+          newState[i].numOfCards = 3;
+        } else {
+          newState[i].numOfCards = null;
+        }
       }
 
       return newState;
@@ -101,59 +106,54 @@ function Cards() {
 
   return (
     <>
-      <Form.Group className="d-flex flex-column justify-content-center align-items-center">
-        <Form.Label className="fs-4">Wybierz swoje karty:</Form.Label>
-        {Array(cardsPerPlayer)
-          .fill()
-          .map((_, idx) => (
-            <Form.Select
-              key={`player-${idx}-${toggle}`}
-              className={makeClassString(
-                "mt-4",
-                "input-card",
-                playerCardsErrors[idx] && "input-error",
-                playerCardsErrors[idx] && "input-error-shake"
-              )}
-              value={playerCards[idx]}
-              onChange={(e) => {
-                setPlayerCards((prevState) => {
-                  const newState = [...prevState];
-                  newState[idx] = e.target.value;
-                  return newState;
-                });
-              }}
-            >
-              {Object.entries(CARDS).map(([group, cards]) => (
-                <optgroup key={group} label={groupTrans[group]}>
-                  {cards.map((card) => (
-                    <option key={card} value={card}>
-                      {card}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-            </Form.Select>
-          ))}
-      </Form.Group>
-      {cardsForAll !== 0 && (
+      <Form>
+        {[4, 5].includes(initialPlayers.length) && (
+          <>
+            <Form.Label className="fs-4">Wybierz, ile masz kart:</Form.Label>
+            <Form.Group className="d-flex justify-content-evenly mb-5">
+              <Form.Check
+                id="first-radio"
+                className="fs-5"
+                name="num-of-cards"
+                type="radio"
+                label={initialPlayers.length === 4 ? "4" : "3"}
+                value={initialPlayers.length === 4 ? "4" : "3"}
+                defaultChecked
+                onChange={(e) => setCardsPerPlayer(parseInt(e.target.value))}
+              />
+              <Form.Check
+                id="second-radio"
+                className="fs-5"
+                name="num-of-cards"
+                type="radio"
+                label={initialPlayers.length === 4 ? "5" : "4"}
+                value={initialPlayers.length === 4 ? "5" : "4"}
+                onChange={(e) => setCardsPerPlayer(parseInt(e.target.value))}
+              />
+            </Form.Group>
+          </>
+        )}
         <Form.Group className="d-flex flex-column justify-content-center align-items-center">
-          <Form.Label className="fs-4 mt-5">
-            Wybierz karty widoczne dla wszystkich:
-          </Form.Label>
-          {Array(cardsForAll)
+          <Form.Label className="fs-4">Wybierz swoje karty:</Form.Label>
+          {Array(cardsPerPlayer)
             .fill()
             .map((_, idx) => (
               <Form.Select
-                key={`all-${idx}-${toggle}`}
-                className="mt-4 input-card"
-                value={allCards[idx]}
-                onChange={(e) =>
-                  setAllCards((prevState) => {
+                key={`player-${idx}-${toggle}`}
+                className={makeClassString(
+                  "mt-4",
+                  "input-card",
+                  playerCardsErrors[idx] && "input-error",
+                  playerCardsErrors[idx] && "input-error-shake"
+                )}
+                value={playerCards[idx]}
+                onChange={(e) => {
+                  setPlayerCards((prevState) => {
                     const newState = [...prevState];
                     newState[idx] = e.target.value;
                     return newState;
-                  })
-                }
+                  });
+                }}
               >
                 {Object.entries(CARDS).map(([group, cards]) => (
                   <optgroup key={group} label={groupTrans[group]}>
@@ -167,7 +167,7 @@ function Cards() {
               </Form.Select>
             ))}
         </Form.Group>
-      )}
+      </Form>
       <NextArrow onClick={validateCards} />
     </>
   );

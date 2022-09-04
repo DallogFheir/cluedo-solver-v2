@@ -61,9 +61,6 @@ function StartScreen() {
         playerName,
         ...otherPlayersNames.slice(0, numOfPlayers - 1),
       ];
-      if (numOfPlayers === 4 || numOfPlayers === 5) {
-        players.push("ALL");
-      }
 
       setInitialPlayers(
         players.map((player) => {
