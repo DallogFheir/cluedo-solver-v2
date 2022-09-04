@@ -1,48 +1,47 @@
 @use "./base" as *;
 
 .screen-container {
-    height: 100%;
-    overflow: scroll;
-    padding-top: 80px;
-    padding: 40px;
+  height: 100%;
+  overflow: scroll;
+  padding: 80px 40px;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 .arrow-next {
-    font-size: 4em;
+  font-size: 4em;
 
-    &:hover {
-        color: $primary-color-light;
-    }
+  &:hover {
+    color: $primary-color-light;
+  }
 }
 
 .input-error {
-    box-shadow: 0 0 10px $error-color;
+  box-shadow: 0 0 10px $error-color;
 }
 
 .input-error-shake {
-    animation: shake 0.4s ease-in-out;
+  animation: shake 0.4s ease-in-out;
 }
 
 @keyframes shake {
-    $translation: 5%;
+  $translation: 5%;
 
-    25% {
-        transform: translateX(-$translation);
-    }
+  25% {
+    transform: translateX(-$translation);
+  }
 
-    50% {
-        transform: translateX($translation);
-    }
+  50% {
+    transform: translateX($translation);
+  }
 
-    75% {
-        transform: translateX(-$translation);
-    }
+  75% {
+    transform: translateX(-$translation);
+  }
 
-    100% {
-        transform: translateX(0);
-    }
+  100% {
+    transform: translateX(0);
+  }
 }

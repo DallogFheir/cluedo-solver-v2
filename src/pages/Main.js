@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
 import { playerReviver, playerReplacer } from "../utilities/jsonUtils";
 import {
   useInitialPlayers,
@@ -11,11 +9,13 @@ import { useSetPlayers } from "../contexts/playersContext";
 import { CARDS, NUM_OF_CARDS } from "../assets/cards";
 import GameEvents from "./GameEvents";
 import GameTable from "./GameTable";
+import makeClassString from "../utilities/makeClassString";
 
 function Main() {
   const [smallWindow, setSmallWindow] = useState(
     window.matchMedia("(max-width: 800px)").matches
   );
+  const [selectedTab, setSelectedTab] = useState("events");
   const [filtered, setFiltered] = useState(false);
   const moves = useMoves();
   const setPlayers = useSetPlayers();
@@ -159,7 +159,7 @@ function Main() {
               .map((p) => p.numOfCards);
 
             if (players.length === 4) {
-              if (players.cards.size === 5) {
+              if (player.cards.size === 5) {
                 player.numOfCards = 5;
                 thereWereChanges = true;
               }
@@ -214,22 +214,37 @@ function Main() {
   useEffect(mainLogic, [initialPlayers, setPlayers, moves]);
 
   return smallWindow ? (
-    <Tabs className="tabs">
-      <TabList>
-        <Tab>Wydarzenia</Tab>
-        <Tab>Tabela</Tab>
-      </TabList>
-      <TabPanel>
+    <>
+      <div className="tabs-list">
+        <div
+          className={makeClassString(
+            "tabs-tab",
+            selectedTab === "events" && "tabs-tab-selected"
+          )}
+          onClick={() => setSelectedTab("events")}
+        >
+          Wydarzenia
+        </div>
+        <div
+          className={makeClassString(
+            "tabs-tab",
+            selectedTab === "table" && "tabs-tab-selected"
+          )}
+          onClick={() => setSelectedTab("table")}
+        >
+          Tabela
+        </div>
+      </div>
+      {selectedTab === "events" ? (
         <GameEvents
           filtered={filtered}
           setFiltered={setFiltered}
           setInitialPlayers={setInitialPlayers}
         />
-      </TabPanel>
-      <TabPanel>
+      ) : (
         <GameTable />
-      </TabPanel>
-    </Tabs>
+      )}
+    </>
   ) : (
     <div className="container-split">
       <GameEvents

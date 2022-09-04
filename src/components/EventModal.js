@@ -48,7 +48,6 @@ function EventModal({ show, setShow }) {
       nextPlayer.notCards.has(card)
     );
 
-    debugger;
     if (ifPlayerHasCard && asker !== 0) {
       responses.push({
         idx: nextPlayerIdx,

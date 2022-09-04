@@ -1,40 +1,41 @@
 @use "./base" as *;
 
 .container-events {
-    height: 100vh;
-    margin: 20px;
-    padding-top: 20px;
-    padding-bottom: 100px;
-    width: 30%;
-    overflow-y: scroll;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  height: 100vh;
+  margin: 20px;
+  padding-top: 20px;
+  padding-bottom: 100px;
+  width: 30%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .button {
-    background-color: $primary-color-light;
+  background-color: $primary-color-light;
 }
 
 .arrow-remove {
-    font-size: 3em;
+  font-size: 3em;
 
-    &:hover {
-        color: $primary-color-light;
-    }
+  &:hover {
+    color: $primary-color-light;
+  }
 }
 
 .link {
-    cursor: pointer;
-    text-decoration: underline;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .link-start-again {
-    padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 @media (max-width: $breakpoint) {
-    .container-events {
-        width: 90%;
-    }
+  .container-events {
+    padding-top: 50px;
+    width: 90%;
+  }
 }

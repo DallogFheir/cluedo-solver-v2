@@ -168,7 +168,9 @@ function Cards() {
             ))}
         </Form.Group>
       </Form>
-      <NextArrow onClick={validateCards} />
+      <div>
+        <NextArrow onClick={validateCards} />
+      </div>
     </>
   );
 }

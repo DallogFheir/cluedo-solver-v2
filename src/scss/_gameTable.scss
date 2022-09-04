@@ -1,28 +1,29 @@
 @use "./base" as *;
 
 .container-table {
-    margin: 20px 60px;
-    padding: 20px 20px 60px 0;
-    width: 60%;
-    height: 100vh;
-    overflow-y: scroll;
+  margin: 20px 60px;
+  padding: 0 20px 60px 0;
+  width: 60%;
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 .table {
-    color: $text-color;
+  color: $text-color;
 }
 
 .table-cell {
-    text-align: center;
+  text-align: center;
 }
 
 .table-cell-bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 @media (max-width: $breakpoint) {
-    .container-table {
-        margin: 20px auto;
-        width: 90%;
-    }
+  .container-table {
+    margin: 0 auto;
+    padding-top: 60px;
+    width: 90%;
+  }
 }
