@@ -38,6 +38,7 @@ function EventModal({ show, setShow }) {
   const responses = [];
   let nextPlayerIdx;
   for (let i = asker + 1, j = 0; j < players.length - 1; j++) {
+    debugger;
     nextPlayerIdx = (i + j) % players.length;
     const nextPlayer = players[nextPlayerIdx];
 
@@ -54,7 +55,7 @@ function EventModal({ show, setShow }) {
         has: ifPlayerHasCard,
       });
       break;
-    } else if (ifPlayerDoesNotHaveCard && asker !== 0) {
+    } else if (ifPlayerDoesNotHaveCard) {
       responses.push({
         idx: nextPlayerIdx,
         has: ifPlayerHasCard,

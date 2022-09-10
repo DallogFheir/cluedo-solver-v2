@@ -58,6 +58,22 @@ function Main() {
     while (thereWereChanges) {
       thereWereChanges = false;
 
+      // check for when n-1 cards in a category are known
+      Object.values(CARDS).forEach((categoryCards) => {
+        const leftCards = categoryCards.filter(
+          (card) => !players.some((player) => player.cards.has(card))
+        );
+
+        if (
+          leftCards.length === 1 &&
+          !players.every((player) => player.notCards.has(leftCards[0]))
+        ) {
+          players.forEach((player) => player.notCards.add(leftCards[0]));
+
+          thereWereChanges = true;
+        }
+      });
+
       // check for situations where player had a card but now it's known
       questionRegister = questionRegister.filter((question) => {
         const status = question.has.filter(
