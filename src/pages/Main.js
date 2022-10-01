@@ -152,6 +152,10 @@ function Main() {
               group.forEach((card) => {
                 if (!player.cards.has(card) && !player.notCards.has(card)) {
                   player.cards.add(card);
+
+                  players
+                    .filter((_player) => player !== _player)
+                    .forEach((_player) => _player.notCards.add(card));
                 }
               })
             );
