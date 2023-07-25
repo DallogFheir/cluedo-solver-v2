@@ -8,8 +8,9 @@
   overflow-y: auto;
 }
 
-.table {
-  color: $text-color;
+.table-tag {
+  --bs-table-color: $text-color;
+  --bs-table-bg: $primary-color;
 }
 
 .table-cell {

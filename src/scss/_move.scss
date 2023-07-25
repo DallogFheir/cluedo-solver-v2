@@ -1,26 +1,26 @@
 @use "./base" as *;
 
 .move {
-    width: 70%;
-    margin: 10px;
-    padding: 10px;
-    background-color: $text-color;
-    color: $text-color-inverse;
-    border-radius: 20px;
+  width: 70%;
+  margin: 10px;
+  padding: 10px;
+  background-color: $text-color;
+  color: $text-color-inverse;
+  border-radius: 20px;
 }
 
 .move-bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .move-p {
-    margin: 10px;
+  margin: 10px;
 }
 
 .move-filter {
-    background-color: $move-filter-color;
+  background-color: $move-filter-color;
 }
 
 .move-item-crossed {
-    text-decoration: line-through;
+  text-decoration: line-through;
 }

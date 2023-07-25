@@ -9,7 +9,7 @@ function GameTable() {
 
   return (
     <div className="container-table">
-      <Table className="table">
+      <Table className="table-tag">
         <thead>
           <tr>
             <th></th>

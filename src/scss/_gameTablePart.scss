@@ -1,12 +1,12 @@
 @use "./base" as *;
 
-.table-cell-crossed {
-    text-decoration: line-through;
-    color: $text-color-crossed;
+.table-cell-crossed.table-cell-crossed {
+  text-decoration: line-through;
+  color: $text-color-crossed;
 }
 
-.table-cell-solution {
-    font-weight: bold;
-    color: $color-solution;
-    text-shadow: 0 0 10px $primary-color-light;
+.table-cell-solution.table-cell-solution {
+  font-weight: bold;
+  color: $color-solution;
+  text-shadow: 0 0 10px $primary-color-light;
 }

@@ -1,21 +1,21 @@
 @use "./base" as *;
 
 .input-player {
-    max-width: 20em;
+  max-width: 20em;
 }
 
 .add-player {
-    cursor: pointer;
+  cursor: pointer;
 
-    &:hover {
-        color: $primary-color-light;
-    }
+  &:hover {
+    color: $primary-color-light;
+  }
 }
 
 .delete-player {
-    cursor: pointer;
-    
-    &:hover {
-        color: $delete-color;
-    }
+  cursor: pointer;
+
+  &:hover {
+    color: $delete-color;
+  }
 }
