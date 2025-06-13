@@ -13,3 +13,4 @@ Aplikacja pomagająca znaleźć rozwiązanie w grze planszowej Cluedo.
    Przycisk "Pokaż tylko istotne" pokaże tylko te zapytania, z których jeszcze nie wyciągnięto wszystkich informacji, i które powinny zostać wzięte pod uwagę przy następnych zapytaniach.
    
    Aplikacja na bieżąco zapisuje stan gry. Aby zacząć od początku, naciśnij link "Zacznij od początku".
+

@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/cluedo-solver-v2/static/css/main.b60dc4f9.css",
+    "main.js": "/cluedo-solver-v2/static/js/main.c7fc76cb.js",
+    "static/media/logo_medium.png": "/cluedo-solver-v2/static/media/logo_medium.9b36a42b291535e4f1b5.png",
+    "static/media/logo_big.png": "/cluedo-solver-v2/static/media/logo_big.e83817cceb6cd8cfc4f4.png",
+    "index.html": "/cluedo-solver-v2/index.html",
+    "main.b60dc4f9.css.map": "/cluedo-solver-v2/static/css/main.b60dc4f9.css.map",
+    "main.c7fc76cb.js.map": "/cluedo-solver-v2/static/js/main.c7fc76cb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b60dc4f9.css",
+    "static/js/main.c7fc76cb.js"
+  ]
+}
