@@ -2,7 +2,7 @@
   "name": "cluedo-solver-v2",
   "version": "0.1.0",
   "private": true,
-  "homepage": "cluedo-solver",
+  "homepage": "cluedo-solver-v2",
   "dependencies": {
     "bootstrap": "^5.3.0",
     "react": "^18.2.0",
@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "build": "set GENERATE_SOURCEMAP=false && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
